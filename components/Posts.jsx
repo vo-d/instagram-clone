@@ -15,7 +15,7 @@ function Posts() {
             username:"Dai Dai Vo",
             userImg:"https://links.papareact.com/3ke",
             img:"https://links.papareact.com/jjm",
-            caption:"I hate this shit"
+            caption:"I love this shit"
         }
     ]
   return (

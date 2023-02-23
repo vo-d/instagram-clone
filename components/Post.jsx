@@ -24,10 +24,21 @@ function Post({id, username, userImg, img, caption}) {
         </div>
         
         {/* caption */}
+        <p className='p-5 truncate'>
+          <span className='font-bold mr-1'>{username}</span>
+          {caption}
+        </p>
 
         {/* comments */}
 
         {/* input box */}
+        <div> 
+          <form action="" className='flex items-center p-4'>
+            <FaceSmileIcon className='h-7'></FaceSmileIcon>
+            <input type="text" className='border-none flex-1 focus-ring-0' placeholder='Add a comment...'/>
+            <button className='font-semibold text-blue-400'>Post</button>
+          </form>
+        </div>
     </div>
   )
 }
