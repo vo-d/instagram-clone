@@ -11,6 +11,14 @@ export const authOptions = {
   ],
   pages: {
     signIn: '/auth/signin',
+  },
+  // This is for the {data:session} = getSession() info
+  callbacks:{
+    async session({session, token, user}){
+      session.user.username = session.user.name.split(' ').join("").toLocaleLowerCase();
+      session.user.uid = token.sub;
+      return session;
+    }
   }
 
 }

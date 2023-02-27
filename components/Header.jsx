@@ -3,21 +3,27 @@ import Image from 'next/image'
 import {MagnifyingGlassIcon, PlusCircleIcon, UserGroupIcon, HeartIcon, PaperAirplaneIcon, Bars3Icon} from '@heroicons/react/24/outline'
 import {HomeIcon} from '@heroicons/react/24/solid'
 import {useSession, signOut, signIn} from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { useRecoilState} from 'recoil'
+import { modalState} from '../atoms/modalAtom'
 
 function Header() {
 
   const {data: session} = useSession();
+  const [open, setOpen] = useRecoilState(modalState);
+
+  const router = useRouter();
   
 
   return (
     <div className='shadow-sm border'>
       <div className='flex justify-between max-w-6xl mx-5 lg:mx-auto'>
         {/* Left */}
-        <div className='relative hidden lg:inline-grid w-24 cursor-pointer'>
+        <div onClick={() => router.push("/")} className='relative hidden lg:inline-grid w-24 cursor-pointer'>
           <Image src="https://links.papareact.com/ocw" fill style={{objectFit:"contain"}}></Image>
         </div>
 
-        <div className='relative lg:hidden w-10 flex-shrink-0 cursor-pointer'>
+        <div onClick={() => router.push("/")} className='relative lg:hidden w-10 flex-shrink-0 cursor-pointer'>
           <Image src="https://links.papareact.com/jjm" fill style={{objectFit:"contain"}}></Image>
         </div>
         {/* Middle -search input field*/}
@@ -34,7 +40,7 @@ function Header() {
 
         {/* Right */}
         <div className='flex items-center justify-end space-x-4'>
-          <HomeIcon className='navBtn'></HomeIcon>
+          <HomeIcon onClick={() => router.push("/")} className='navBtn'></HomeIcon>
           <Bars3Icon className='h-10 w-10 md:hidden cursor-pointer'></Bars3Icon>
 
           {session ? (
@@ -45,7 +51,8 @@ function Header() {
               justify-center animate-pulse text-white'>3</div>
               </div>
             
-              <PlusCircleIcon className='navBtn'></PlusCircleIcon>
+              <PlusCircleIcon onClick={() => setOpen(true)} className='navBtn'></PlusCircleIcon>
+              <UserGroupIcon className='navBtn'></UserGroupIcon>
               <HeartIcon className='navBtn'></HeartIcon>
               <img src={session.user.image} onClick={signOut} alt="profile pic" className='h-10 rounded-full cursor-pointer w-10' />
             </>) : (
