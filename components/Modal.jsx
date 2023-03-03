@@ -131,7 +131,7 @@ function Modal() {
                                     focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300
                                     disabled:cursor-not-allowed hover:disabled:bg-gray-300'
                                     onClick={uploadPost}
-                                    
+                                    disabled={!selectedFile}
                                     >
                                         {loading? "Uploading..." : "Upload Post"}
                                     </button>
