@@ -35,15 +35,15 @@ function Modal() {
             timestamp: serverTimestamp()
         })
 
-        if(selectedFile){
-            const storageRef = ref(storage, `posts/${docRef.id}`);
-            await uploadString(storageRef, selectedFile, 'data_url').then(async(snapshot)=>{
-                const downloadURL = await getDownloadURL(storageRef);
-                await updateDoc(doc(db, 'posts', docRef.id), {
-                    image: downloadURL
-                })
+        
+        const storageRef = ref(storage, `posts/${docRef.id}`);
+        await uploadString(storageRef, selectedFile, 'data_url').then(async(snapshot)=>{
+            const downloadURL = await getDownloadURL(storageRef);
+            await updateDoc(doc(db, 'posts', docRef.id), {
+                image: downloadURL
             })
-        }
+        })
+        
         
         setOpen(false);
         setLoading(false);
