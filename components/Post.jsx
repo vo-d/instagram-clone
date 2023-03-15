@@ -13,6 +13,7 @@ function Post({id, username, userImg, img, caption}) {
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
 
+
   // Everytime database, or id update, set comments array to the list of all comments document from database in real time
   useEffect(() => {
     const commentCollectionRef = collection(db, 'posts', id, 'comments');
@@ -33,7 +34,7 @@ function Post({id, username, userImg, img, caption}) {
   useEffect(() => {
     setHasLiked(likes.findIndex(like => like.id === session.user.uid) !== -1)
   }, [likes]);
- 
+
   const sendComment = async(e) =>{
     e.preventDefault();
 
@@ -59,7 +60,6 @@ function Post({id, username, userImg, img, caption}) {
       })
     }
   }
-
   
 
   console.log(hasLiked)
