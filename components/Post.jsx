@@ -1,5 +1,6 @@
 import {React, useEffect, useState} from 'react'
 import { BookmarkIcon, ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontalIcon, FaceSmileIcon, HeartIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline'
+import { HeartIcon as HeartIconFilled } from '@heroicons/react/24/solid'
 import { useSession } from 'next-auth/react'
 import {db} from '../firebase'
 import { collection, addDoc, serverTimestamp, query, onSnapshot, orderBy, doc, setDoc, deleteDoc  } from 'firebase/firestore'
@@ -24,8 +25,8 @@ function Post({id, username, userImg, img, caption}) {
 
   // Everytime database, or id update, set likes array to the list of all likes document from database in real time
   useEffect(() => {
-    const likeCollectionRef = collection(db, 'posts', id, 'likes')
-    return onSnapshot(likeCollectionRef, (snapshot)=>{
+    const commentCollectionRef = collection(db, 'posts', id, 'likes');
+    onSnapshot(commentCollectionRef, (snapshot)=>{
       setLikes(snapshot.docs)
     })
   }, [db, id]);
@@ -56,11 +57,10 @@ function Post({id, username, userImg, img, caption}) {
     }
     else{
       await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
-        username: session.user.username
+        timestamp: serverTimestamp()
       })
     }
   }
-  
 
   console.log(hasLiked)
   console.log(session.user.uid)
@@ -80,7 +80,9 @@ function Post({id, username, userImg, img, caption}) {
         {session && (
           <div className='flex justify-between px-4 pt-4'>
             <div className='flex space-x-4'>
-              <HeartIcon onClick={likePost} className='btn'/>
+              {hasLiked ? 
+                (<HeartIconFilled onClick={likePost} className='btn text-red-500'/>):(<HeartIcon onClick={likePost} className='btn'/>)
+              }
               <ChatBubbleOvalLeftEllipsisIcon className='btn'/>
               <PaperAirplaneIcon className='btn'/>
             </div>
@@ -91,6 +93,9 @@ function Post({id, username, userImg, img, caption}) {
         
         {/* caption */}
         <p className='p-5 truncate'>
+          {likes.length > 0 && (
+            <p className='font-bold mb-1'>{likes.length} likes</p>
+          )}
           <span className='font-bold mr-1'>{username}</span>
           {caption}
         </p>
