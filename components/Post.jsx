@@ -1,5 +1,6 @@
 import {React, useEffect, useState} from 'react'
 import { BookmarkIcon, ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontalIcon, FaceSmileIcon, HeartIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline'
+import {HeartIcon as HeartIconSolid} from '@heroicons/react/24/solid'
 import { useSession } from 'next-auth/react'
 import {db} from '../firebase'
 import { collection, addDoc, serverTimestamp, query, onSnapshot, orderBy, doc, setDoc, deleteDoc  } from 'firebase/firestore'
@@ -31,8 +32,9 @@ function Post({id, username, userImg, img, caption}) {
   }, [db, id]);
 
   // this useEffect return index of like in likes array which has the id = session id. If it can't find, return -1
+  // "?" is there to prevent error since session can be null"
   useEffect(() => {
-    setHasLiked(likes.findIndex(like => like.id === session.user.uid) !== -1)
+    setHasLiked(likes.findIndex(like => like.id === session?.user?.uid) !== -1)
   }, [likes]);
 
   const sendComment = async(e) =>{
@@ -63,13 +65,13 @@ function Post({id, username, userImg, img, caption}) {
   
 
   console.log(hasLiked)
-  console.log(session.user.uid)
+  console.log(session)
 
   return (
     <div className='bg-white my-7 border rounded-sm'>
         {/* Header */}
         <div className='flex items-center p-5'>
-          <img src={session.user.image} alt="" className='rounded-full h-12 w-12 object-contain border p-1 mr-3'/>
+          <img src={userImg} alt="" className='rounded-full h-12 w-12 object-contain border p-1 mr-3'/>
           <p className='flex-1 font-bold'>{username}</p>
           <EllipsisHorizontalIcon className='h-5'></EllipsisHorizontalIcon>
         </div>
@@ -80,7 +82,12 @@ function Post({id, username, userImg, img, caption}) {
         {session && (
           <div className='flex justify-between px-4 pt-4'>
             <div className='flex space-x-4'>
-              <HeartIcon onClick={likePost} className='btn'/>
+              {hasLiked? (
+                <HeartIconSolid onClick={likePost} className='text-red-500 btn'/>
+              ) : (
+                <HeartIcon onClick={likePost} className='btn'/>
+
+              )}
               <ChatBubbleOvalLeftEllipsisIcon className='btn'/>
               <PaperAirplaneIcon className='btn'/>
             </div>

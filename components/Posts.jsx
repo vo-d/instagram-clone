@@ -8,9 +8,11 @@ function Posts() {
     const [posts, setPosts] = useState([]);
     useEffect(()=>{
         const collectionRef = collection(db, 'posts');
-        return onSnapshot(query(collectionRef, orderBy('timestamp', 'desc')), snapshot=>{
-            setPosts(snapshot.docs)
-        }) 
+        return (
+            onSnapshot(query(collectionRef, orderBy('timestamp', 'desc')), snapshot=>{
+                setPosts(snapshot.docs)
+            }) 
+        )
     }, [db])
     return (
     
